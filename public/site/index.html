@@ -2033,15 +2033,51 @@
   videoModal.addEventListener('click', (e) => { if (e.target === videoModal) closeVideoModal(); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeVideoModal(); });
 
-  // Contact form (demo only)
+  // Toast notification helper
+  function showToast(message, isError) {
+    let toast = document.getElementById('siteToast');
+    if (!toast) {
+      toast = document.createElement('div');
+      toast.id = 'siteToast';
+      toast.style.cssText = 'position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(20px);padding:14px 24px;border-radius:12px;font-weight:600;font-size:14px;color:#fff;z-index:9999;opacity:0;transition:opacity .3s ease, transform .3s ease;box-shadow:0 12px 30px -8px rgba(0,0,0,0.5);backdrop-filter:blur(10px);';
+      document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+    toast.style.background = isError ? '#dc2626' : '#16a34a';
+    requestAnimationFrame(() => {
+      toast.style.opacity = '1';
+      toast.style.transform = 'translateX(-50%) translateY(0)';
+    });
+    clearTimeout(toast._t);
+    toast._t = setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateX(-50%) translateY(20px)';
+    }, 3500);
+  }
+
+  // Contact form — submit to FormSubmit via AJAX
   const form = document.getElementById('contactForm');
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const btn = form.querySelector('button[type="submit"]');
     const original = btn.innerHTML;
-    btn.innerHTML = 'Message Sent ✓';
-    btn.style.background = '#16a34a';
-    setTimeout(() => { btn.innerHTML = original; btn.style.background = ''; form.reset(); }, 2600);
+    btn.disabled = true;
+    btn.innerHTML = 'Sending...';
+    try {
+      const res = await fetch('https://formsubmit.co/ajax/ah.ha.elbadawy@gmail.com', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(Object.fromEntries(new FormData(form).entries()))
+      });
+      if (!res.ok) throw new Error('Network error');
+      showToast('Message sent successfully!', false);
+      form.reset();
+    } catch (err) {
+      showToast('Something went wrong. Please try again.', true);
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = original;
+    }
   });
   </script>
  </body>
