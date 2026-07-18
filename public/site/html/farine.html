@@ -1,0 +1,1177 @@
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+   Farine &amp; Foil — Bakery &amp; Patisserie
+  </title>
+  <meta content="Farine &amp; Foil — a warm, artisanal bakery and patisserie. Croissants, kunafa tarts, sourdough, and slow-baked goods, made fresh daily." name="description"/>
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="css/css2" rel="stylesheet"/>
+  <style>
+   :root{
+    --flour:#F7F1E8;
+    --flour-soft:#EFE6D6;
+    --caramel:#C58A4D;
+    --caramel-deep:#9A5F2A;
+    --rose:#D9A6A0;
+    --rose-soft:#EBC8C2;
+    --walnut:#3E2A1F;
+    --walnut-soft:#5A4030;
+    --gold:#C9A24C;
+    --gold-soft:#E4C77A;
+    --ink:#2A1B12;
+    --paper:#FBF6EC;
+    --ease: cubic-bezier(.16,.84,.44,1);
+    --radius: 18px;
+  }
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Nunito', system-ui, sans-serif;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    position:relative;
+  }
+  /* Paper grain overlay */
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    pointer-events:none;
+    z-index:1;
+    opacity:.35;
+    mix-blend-mode:multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.35  0 0 0 0 0.25  0 0 0 0 0.18  0 0 0 0.12 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  }
+  h1,h2,h3,h4,.serif{ font-family:'Fraunces', Georgia, serif; letter-spacing:-0.01em; font-weight:500; color:var(--walnut); }
+  img{ max-width:100%; display:block; }
+  a{ color:inherit; text-decoration:none; }
+  button{ font:inherit; cursor:pointer; border:none; background:none; color:inherit; }
+
+  /* Proof-line scroll progress */
+  .progress{
+    position:fixed; top:0; left:0; height:3px; width:0%;
+    background: linear-gradient(90deg, var(--rose), var(--caramel), var(--gold));
+    z-index:100;
+    box-shadow: 0 0 12px rgba(201,162,76,.6);
+  }
+
+  /* NAV */
+  .nav{
+    position:fixed; top:0; left:0; right:0;
+    z-index:60;
+    padding:18px 32px;
+    display:flex; align-items:center; justify-content:space-between;
+    transition: background .4s var(--ease), backdrop-filter .4s, padding .4s;
+  }
+  .nav.scrolled{
+    background: rgba(251,246,236,.85);
+    backdrop-filter: blur(14px);
+    padding:12px 32px;
+    box-shadow: 0 1px 0 rgba(62,42,31,.08);
+  }
+  .brand{
+    font-family:'Fraunces', serif;
+    font-size:22px; font-weight:600;
+    color:var(--walnut);
+    display:flex; align-items:center; gap:10px;
+  }
+  .brand-mark{
+    width:34px; height:34px; border-radius:50%;
+    background: radial-gradient(circle at 35% 30%, var(--gold-soft), var(--caramel) 60%, var(--caramel-deep));
+    box-shadow: inset 0 -4px 8px rgba(0,0,0,.15), 0 3px 8px rgba(154,95,42,.3);
+    position:relative;
+  }
+  .brand-mark::after{
+    content:""; position:absolute; inset:5px;
+    border-radius:50%;
+    border:1px dashed rgba(255,255,255,.55);
+  }
+  .nav-links{ display:flex; gap:32px; align-items:center; }
+  .nav-links a{
+    font-size:14px; font-weight:500; color:var(--walnut-soft);
+    position:relative; transition:color .3s;
+  }
+  .nav-links a::after{
+    content:""; position:absolute; left:0; bottom:-4px; height:1px; width:0;
+    background:var(--caramel); transition:width .3s var(--ease);
+  }
+  .nav-links a:hover{ color:var(--walnut); }
+  .nav-links a:hover::after{ width:100%; }
+  .cta{
+    padding:10px 20px;
+    background:var(--walnut);
+    color:var(--flour);
+    border-radius:999px;
+    font-weight:600; font-size:14px;
+    transition: transform .3s var(--ease), box-shadow .3s, background .3s;
+    box-shadow: 0 4px 14px rgba(62,42,31,.25);
+  }
+  .cta:hover{ transform:translateY(-2px); background:var(--caramel-deep); box-shadow: 0 8px 20px rgba(154,95,42,.35); }
+  .menu-toggle{ display:none; font-size:22px; color:var(--walnut); }
+
+  /* HERO */
+  .hero{
+    position:relative;
+    height:100vh; min-height:640px;
+    overflow:hidden;
+    display:flex; align-items:center; justify-content:center;
+    text-align:center;
+    isolation:isolate;
+  }
+  .hero-bg{
+    position:absolute; inset:-6%;
+    background-image: url("/__l5e/assets-v1/4639b96d-742c-435b-ab1e-c0a7addd649a/farine-hero.jpg");
+    background-size:cover; background-position:center;
+    will-change: transform;
+    filter: saturate(1.05);
+  }
+  .hero-vignette{
+    position:absolute; inset:0;
+    background:
+      radial-gradient(ellipse at 50% 40%, rgba(247,241,232,0) 0%, rgba(247,241,232,.15) 45%, rgba(62,42,31,.55) 100%),
+      linear-gradient(180deg, rgba(62,42,31,.35) 0%, rgba(62,42,31,.15) 40%, rgba(62,42,31,.75) 100%);
+  }
+  .hero canvas{ position:absolute; inset:0; z-index:2; pointer-events:none; }
+  .hero-content{
+    position:relative; z-index:3;
+    max-width:820px; padding:0 24px;
+    color:var(--flour);
+    will-change: transform;
+  }
+  .hero-eyebrow{
+    font-size:13px; letter-spacing:.35em; text-transform:uppercase;
+    color:var(--gold-soft); margin-bottom:22px;
+    display:inline-block;
+    padding:6px 18px;
+    border:1px solid rgba(228,199,122,.35);
+    border-radius:999px;
+    backdrop-filter: blur(6px);
+  }
+  .hero h1{
+    font-size: clamp(48px, 9vw, 108px);
+    line-height:1;
+    color:var(--flour);
+    font-weight:400;
+    letter-spacing:-.02em;
+  }
+  .hero h1 em{
+    font-style:italic; color:var(--gold-soft); font-weight:500;
+  }
+  .hero-sub{
+    margin-top:24px;
+    font-size: clamp(15px, 1.6vw, 18px);
+    max-width:520px;
+    margin-left:auto; margin-right:auto;
+    color: rgba(247,241,232,.85);
+  }
+  .hero-actions{
+    margin-top:38px;
+    display:flex; gap:14px; justify-content:center; flex-wrap:wrap;
+  }
+  .btn{
+    padding:14px 28px;
+    border-radius:999px;
+    font-weight:600; font-size:14px;
+    letter-spacing:.02em;
+    transition: transform .3s var(--ease), box-shadow .3s, background .3s, color .3s, border-color .3s;
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  .btn-primary{
+    background: linear-gradient(135deg, var(--caramel), var(--caramel-deep));
+    color: var(--flour);
+    box-shadow: 0 8px 24px rgba(154,95,42,.4);
+  }
+  .btn-primary:hover{ transform:translateY(-3px); box-shadow: 0 14px 32px rgba(154,95,42,.55); }
+  .btn-ghost{
+    background: rgba(247,241,232,.08);
+    color: var(--flour);
+    border: 1px solid rgba(247,241,232,.4);
+    backdrop-filter: blur(8px);
+  }
+  .btn-ghost:hover{ background: rgba(247,241,232,.16); border-color: var(--flour); }
+  .scroll-hint{
+    position:absolute; bottom:32px; left:50%; transform:translateX(-50%);
+    color: rgba(247,241,232,.7); font-size:12px; letter-spacing:.3em; text-transform:uppercase;
+    z-index:3;
+    animation: bob 2.4s ease-in-out infinite;
+  }
+  @keyframes bob{ 0%,100%{ transform:translate(-50%,0);} 50%{ transform:translate(-50%,8px);} }
+
+  /* SECTIONS */
+  section{ position:relative; z-index:2; }
+  .section{ padding: clamp(80px, 12vw, 140px) 0; }
+  .container{ max-width:1200px; margin:0 auto; padding:0 32px; }
+  .eyebrow{
+    font-size:12px; letter-spacing:.35em; text-transform:uppercase;
+    color:var(--caramel-deep); font-weight:600;
+    display:inline-block; margin-bottom:14px;
+  }
+  .section-title{
+    font-size: clamp(34px, 5vw, 56px);
+    line-height:1.05;
+    max-width:720px;
+    margin-bottom:20px;
+  }
+  .section-title em{ font-style:italic; color:var(--caramel); font-weight:500;}
+  .section-lead{
+    max-width:640px;
+    color:var(--walnut-soft);
+    font-size:17px;
+  }
+
+  /* Reveal */
+  .reveal{
+    opacity:0;
+    transform: translateY(28px);
+    transition: opacity .9s var(--ease), transform .9s var(--ease);
+  }
+  .reveal.in{ opacity:1; transform:none; }
+  .reveal-d1{ transition-delay:.08s; }
+  .reveal-d2{ transition-delay:.16s; }
+  .reveal-d3{ transition-delay:.24s; }
+  .reveal-d4{ transition-delay:.32s; }
+
+  /* STORY */
+  .story{
+    display:grid; grid-template-columns: 1.1fr .9fr; gap:80px; align-items:center;
+  }
+  .story-img{
+    position:relative; aspect-ratio: 4/5;
+    border-radius: var(--radius);
+    overflow:hidden;
+    box-shadow: 0 30px 60px -20px rgba(62,42,31,.35);
+  }
+  .story-img::before{
+    content:""; position:absolute; inset:0; z-index:2;
+    background: linear-gradient(180deg, transparent 55%, rgba(62,42,31,.5));
+  }
+  .story-img > div{
+    position:absolute; inset:0;
+    background-image: url("/__l5e/assets-v1/4639b96d-742c-435b-ab1e-c0a7addd649a/farine-hero.jpg");
+    background-size:cover; background-position:center;
+    transform: scale(1.05);
+    filter: sepia(.1) saturate(1.05);
+  }
+  .story-img::after{
+    content:"Baked daily since 2019";
+    position:absolute; z-index:3;
+    left:24px; bottom:22px; right:24px;
+    color:var(--flour);
+    font-family:'Fraunces', serif; font-style:italic;
+    font-size:15px;
+    letter-spacing:.02em;
+  }
+  .story-quote{
+    margin-top:26px; padding:24px 26px;
+    border-left:3px solid var(--caramel);
+    background: rgba(217,166,160,.08);
+    border-radius: 6px;
+    font-family:'Fraunces', serif; font-style:italic; font-size:18px;
+    color:var(--walnut); line-height:1.55;
+  }
+
+  /* MENU */
+  .menu-section{ background: linear-gradient(180deg, var(--paper), var(--flour-soft)); }
+  .menu-grid{
+    display:grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap:26px; margin-top:56px;
+  }
+  .menu-card{
+    position:relative;
+    background: var(--flour);
+    border-radius: var(--radius);
+    padding:28px 26px 26px;
+    border:1px solid rgba(154,95,42,.14);
+    box-shadow: 0 6px 20px -8px rgba(62,42,31,.15);
+    transition: transform .5s var(--ease), box-shadow .5s;
+    transform-style: preserve-3d;
+    will-change: transform;
+    overflow:hidden;
+  }
+  .menu-card::before{
+    content:""; position:absolute; inset:0;
+    background: radial-gradient(600px circle at var(--mx,50%) var(--my,50%), rgba(201,162,76,.18), transparent 40%);
+    opacity:0; transition: opacity .4s;
+    pointer-events:none;
+  }
+  .menu-card:hover{ box-shadow: 0 24px 44px -18px rgba(62,42,31,.35); }
+  .menu-card:hover::before{ opacity:1; }
+  .menu-card .tag{
+    position:absolute; top:16px; right:16px;
+    font-size:10px; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--caramel-deep); font-weight:700;
+  }
+  .menu-card h3{
+    font-size:22px; margin-bottom:8px;
+    color:var(--walnut);
+  }
+  .menu-card p{
+    font-size:14px; color:var(--walnut-soft);
+    min-height:44px;
+  }
+  .menu-price{
+    margin-top:18px;
+    display:flex; align-items:baseline; justify-content:space-between;
+    padding-top:16px;
+    border-top: 1px dashed rgba(154,95,42,.3);
+  }
+  .menu-price .amount{
+    font-family:'Fraunces', serif; font-size:24px; color:var(--caramel-deep); font-weight:600;
+  }
+  .menu-price .currency{ font-size:12px; color:var(--walnut-soft); letter-spacing:.15em; }
+  .menu-icon{
+    width:44px; height:44px; border-radius:50%;
+    background: radial-gradient(circle at 35% 30%, var(--gold-soft), var(--caramel));
+    margin-bottom:16px;
+    box-shadow: inset 0 -3px 6px rgba(0,0,0,.15), 0 4px 10px rgba(201,162,76,.3);
+  }
+
+  /* GALLERY */
+  .gallery-section{ background: var(--paper); }
+  .gallery{
+    columns: 3;
+    column-gap: 18px;
+    margin-top:56px;
+  }
+  .gallery figure{
+    break-inside: avoid;
+    margin-bottom:18px;
+    border-radius: 14px;
+    overflow:hidden;
+    position:relative;
+    box-shadow: 0 10px 24px -12px rgba(62,42,31,.3);
+    transition: transform .5s var(--ease);
+  }
+  .gallery figure:hover{ transform: translateY(-4px); }
+  .gallery-tile{
+    display:block;
+    background-size:cover; background-position:center;
+    filter: sepia(.08) saturate(1.05);
+  }
+  .gallery figcaption{
+    position:absolute; left:0; right:0; bottom:0;
+    padding:14px 16px;
+    color:var(--flour);
+    background: linear-gradient(180deg, transparent, rgba(62,42,31,.7));
+    font-family:'Fraunces', serif; font-style:italic;
+    font-size:14px;
+  }
+
+  /* HOURS / LOCATION */
+  .info-section{ background: linear-gradient(180deg, var(--flour-soft), var(--paper)); }
+  .info-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items:stretch; margin-top:48px; }
+  .info-block{
+    background:var(--flour);
+    border-radius: var(--radius);
+    padding: 36px;
+    border:1px solid rgba(154,95,42,.14);
+    box-shadow: 0 6px 20px -8px rgba(62,42,31,.15);
+  }
+  .info-block h3{ font-size:26px; margin-bottom:20px;}
+  .hours-row{
+    display:flex; justify-content:space-between;
+    padding:10px 0;
+    border-bottom: 1px dashed rgba(154,95,42,.25);
+    font-size:15px;
+  }
+  .hours-row:last-child{ border-bottom:none;}
+  .hours-row .day{ color:var(--walnut); font-weight:600; }
+  .hours-row .time{ color:var(--walnut-soft); font-family:'Fraunces', serif; }
+  .map{
+    position:relative; height:100%; min-height:280px;
+    border-radius: var(--radius);
+    background:
+      linear-gradient(135deg, var(--rose-soft), var(--flour-soft) 60%, var(--gold-soft));
+    overflow:hidden;
+    border:1px solid rgba(154,95,42,.14);
+  }
+  .map::before{
+    content:""; position:absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(154,95,42,.12) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(154,95,42,.12) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity:.7;
+  }
+  .map-pin{
+    position:absolute; top:50%; left:50%; transform:translate(-50%,-100%);
+    width:36px; height:36px; border-radius:50% 50% 50% 0;
+    background: var(--caramel-deep);
+    transform: translate(-50%,-100%) rotate(-45deg);
+    box-shadow: 0 10px 20px rgba(62,42,31,.35);
+  }
+  .map-pin::after{
+    content:""; position:absolute; inset:9px;
+    background:var(--flour); border-radius:50%;
+  }
+  .map-label{
+    position:absolute; left:50%; bottom:20px; transform:translateX(-50%);
+    background: var(--flour);
+    padding: 8px 16px; border-radius:999px;
+    font-family:'Fraunces', serif; font-size:13px; color:var(--walnut);
+    box-shadow: 0 6px 14px rgba(62,42,31,.2);
+    white-space:nowrap;
+  }
+
+  /* REVIEWS */
+  .reviews-section{ background: var(--walnut); color:var(--flour); }
+  .reviews-section .eyebrow{ color:var(--gold-soft);}
+  .reviews-section .section-title{ color:var(--flour);}
+  .reviews-section .section-title em{ color:var(--gold-soft);}
+  .reviews-section .section-lead{ color: rgba(247,241,232,.75); }
+  .reviews-strip{
+    display:grid; grid-template-columns: repeat(3, 1fr); gap:24px;
+    margin-top:56px;
+  }
+  .review{
+    background: rgba(247,241,232,.05);
+    border:1px solid rgba(247,241,232,.1);
+    border-radius: var(--radius);
+    padding: 28px;
+    backdrop-filter: blur(6px);
+  }
+  .review .stars{ color: var(--gold-soft); letter-spacing:2px; margin-bottom:14px;}
+  .review blockquote{
+    font-family:'Fraunces', serif; font-style:italic;
+    font-size:17px; line-height:1.55;
+    color: var(--flour);
+    margin-bottom:18px;
+  }
+  .review cite{
+    font-style: normal;
+    font-size:13px; color: rgba(247,241,232,.7);
+    letter-spacing:.05em;
+  }
+  .review cite strong{ color: var(--gold-soft); display:block; font-weight:600; font-size:14px;}
+
+  /* FOOTER */
+  footer{
+    background: var(--paper);
+    padding: 64px 0 32px;
+    border-top: 1px solid rgba(154,95,42,.14);
+  }
+  .footer-grid{
+    display:grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap:48px;
+    margin-bottom:48px;
+  }
+  .footer-grid h4{
+    font-size:15px; letter-spacing:.15em; text-transform:uppercase;
+    color: var(--walnut); margin-bottom:16px;
+    font-family:'Nunito', sans-serif; font-weight:700;
+  }
+  .footer-grid a, .footer-grid p{ color: var(--walnut-soft); font-size:14px; display:block; margin-bottom:8px; transition: color .2s; }
+  .footer-grid a:hover{ color: var(--caramel-deep); }
+  .footer-brand p{ margin-top:14px; max-width:280px; }
+  .socials{ display:flex; gap:12px; margin-top:16px; }
+  .socials a{
+    width:38px; height:38px; border-radius:50%;
+    background: var(--flour);
+    border:1px solid rgba(154,95,42,.2);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--walnut);
+    margin:0;
+    transition: background .3s, color .3s, transform .3s;
+  }
+  .socials a:hover{ background: var(--walnut); color: var(--flour); transform: translateY(-2px);}
+  .footer-bottom{
+    text-align:center; padding-top:24px;
+    border-top: 1px solid rgba(154,95,42,.14);
+    color: var(--walnut-soft); font-size:13px;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px){
+    .nav-links{ display:none; }
+    .menu-toggle{ display:block; }
+    .story{ grid-template-columns: 1fr; gap:48px;}
+    .info-grid{ grid-template-columns: 1fr; }
+    .reviews-strip{ grid-template-columns: 1fr; }
+    .footer-grid{ grid-template-columns: 1fr 1fr; gap:32px;}
+    .gallery{ columns: 2; }
+  }
+  @media (max-width: 560px){
+    .gallery{ columns: 1; }
+    .footer-grid{ grid-template-columns: 1fr;}
+    .nav{ padding: 14px 20px;}
+    .container{ padding: 0 20px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{ animation-duration:.001ms !important; transition-duration:.001ms !important; }
+    .hero-bg{ transform:none !important; }
+    .reveal{ opacity:1; transform:none; }
+  }
+
+  :focus-visible{ outline: 2px solid var(--caramel); outline-offset: 3px; border-radius:6px; }
+  </style>
+ </head>
+ <body>
+  <div class="progress" id="progress" style="width: 100%;">
+  </div>
+  <nav class="nav scrolled" id="nav">
+   <a aria-label="Farine &amp; Foil home" class="brand" href="#">
+    <span aria-hidden="true" class="brand-mark">
+    </span>
+    <span>
+     Farine
+     <em style="font-style:italic;color:var(--caramel);">
+      &amp;
+     </em>
+     Foil
+    </span>
+   </a>
+   <div class="nav-links">
+    <a href="#story">
+     Story
+    </a>
+    <a href="#menu">
+     Menu
+    </a>
+    <a href="#gallery">
+     Gallery
+    </a>
+    <a href="#visit">
+     Visit
+    </a>
+    <a href="#reviews">
+     Reviews
+    </a>
+   </div>
+   <a class="cta" href="#menu">
+    Reserve a Box
+   </a>
+   <button aria-label="Toggle menu" class="menu-toggle">
+    ☰
+   </button>
+  </nav>
+  <!-- HERO -->
+  <header class="hero" id="top">
+   <div class="hero-bg" id="heroBg" style="transform: translateY(255.85px) scale(1.05);">
+   </div>
+   <div class="hero-vignette">
+   </div>
+   <canvas height="888" id="flourCanvas" style="width: 1905px; height: 888px;" width="1905">
+   </canvas>
+   <div class="hero-content" id="heroContent" style="transform: translateY(131.58px); opacity: 0;">
+    <span class="hero-eyebrow">
+     Bakery &amp; Patisserie · Est. 2019
+    </span>
+    <h1>
+     Slow-baked,
+     <em>
+      quietly
+     </em>
+     <br/>
+     lovely mornings.
+    </h1>
+    <p class="hero-sub">
+     A small neighborhood bakery folding butter into laminated dough before the sun rises. Croissants, kunafa tarts, sourdough, and things worth waking up for.
+    </p>
+    <div class="hero-actions">
+     <a class="btn btn-primary" href="#menu">
+      Reserve a Box →
+     </a>
+     <a class="btn btn-ghost" href="#story">
+      Our Story
+     </a>
+    </div>
+   </div>
+   <div class="scroll-hint">
+    Scroll
+   </div>
+  </header>
+  <!-- STORY -->
+  <section class="section" id="story">
+   <div class="container">
+    <div class="story">
+     <div class="story-copy">
+      <span class="eyebrow reveal in">
+       Our story
+      </span>
+      <h2 class="section-title reveal reveal-d1 in">
+       Butter, flour, patience —
+       <em>
+        and time.
+       </em>
+      </h2>
+      <p class="section-lead reveal reveal-d2 in">
+       Farine &amp; Foil started as a tiny home oven and a stubborn belief that a croissant deserves 72 hours of care. We source stone-milled flour, seasonal Egyptian fruit, and small-farm butter, and we let the dough decide when it's ready.
+      </p>
+      <p class="section-lead reveal reveal-d3 in" style="margin-top:16px;">
+       Every loaf is scored by hand. Every tart is glazed before it leaves the marble. Nothing here is quick — and that's the point.
+      </p>
+      <div class="story-quote reveal reveal-d4 in">
+       "We don't chase trends. We chase the smell of a good crust at 6 a.m."
+       <br/>
+       <span style="font-style:normal;font-size:13px;letter-spacing:.15em;text-transform:uppercase;color:var(--caramel-deep);display:block;margin-top:10px;">
+        — Head Baker, Farine &amp; Foil
+       </span>
+      </div>
+     </div>
+     <div class="story-img reveal reveal-d2 in">
+      <div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section>
+  <!-- MENU -->
+  <section class="section menu-section" id="menu">
+   <div class="container">
+    <span class="eyebrow reveal in">
+     The counter
+    </span>
+    <h2 class="section-title reveal reveal-d1 in">
+     Today's
+     <em>
+      bake
+     </em>
+     .
+    </h2>
+    <p class="section-lead reveal reveal-d2 in">
+     A rotating selection depending on the season and the mood of the starter. Everything below is baked fresh this morning. Prices in EGP.
+    </p>
+    <div class="menu-grid" id="menuGrid">
+     <article class="menu-card reveal in">
+      <div aria-hidden="true" class="menu-icon">
+      </div>
+      <span class="tag">
+       Daily
+      </span>
+      <h3>
+       Croissant Classique
+      </h3>
+      <p>
+       72-hour laminated dough, cultured French butter, deep golden crust.
+      </p>
+      <div class="menu-price">
+       <span class="amount">
+        65
+       </span>
+       <span class="currency">
+        EGP
+       </span>
+      </div>
+     </article>
+     <article class="menu-card reveal reveal-d1 in">
+      <div aria-hidden="true" class="menu-icon">
+      </div>
+      <span class="tag">
+       Signature
+      </span>
+      <h3>
+       Pistachio &amp; Rose Kunafa Tart
+      </h3>
+      <p>
+       Crisp kunafa shell, pistachio cream, rose-glazed with edible petals.
+      </p>
+      <div class="menu-price">
+       <span class="amount">
+        145
+       </span>
+       <span class="currency">
+        EGP
+       </span>
+      </div>
+     </article>
+     <article class="menu-card reveal reveal-d2 in">
+      <div aria-hidden="true" class="menu-icon">
+      </div>
+      <span class="tag">
+       Daily
+      </span>
+      <h3>
+       Sourdough Loaf
+      </h3>
+      <p>
+       Wild-yeast, stone-milled flour, blistered crust — baked daily at dawn.
+      </p>
+      <div class="menu-price">
+       <span class="amount">
+        120
+       </span>
+       <span class="currency">
+        EGP
+       </span>
+      </div>
+     </article>
+     <article class="menu-card reveal reveal-d3 in">
+      <div aria-hidden="true" class="menu-icon">
+      </div>
+      <span class="tag">
+       Popular
+      </span>
+      <h3>
+       Salted Caramel Choux
+      </h3>
+      <p>
+       Craquelin choux, vanilla cream, salted caramel poured to order.
+      </p>
+      <div class="menu-price">
+       <span class="amount">
+        95
+       </span>
+       <span class="currency">
+        EGP
+       </span>
+      </div>
+     </article>
+     <article class="menu-card reveal in">
+      <div aria-hidden="true" class="menu-icon">
+      </div>
+      <span class="tag">
+       Weekend
+      </span>
+      <h3>
+       Cardamom Cinnamon Rolls
+      </h3>
+      <p>
+       Soft brioche, cardamom butter, warm sugar crust — Fridays &amp; Saturdays only.
+      </p>
+      <div class="menu-price">
+       <span class="amount">
+        85
+       </span>
+       <span class="currency">
+        EGP
+       </span>
+      </div>
+     </article>
+     <article class="menu-card reveal reveal-d1 in">
+      <div aria-hidden="true" class="menu-icon">
+      </div>
+      <span class="tag">
+       Gift box
+      </span>
+      <h3>
+       The Farine &amp; Foil Box
+      </h3>
+      <p>
+       An assorted six-piece box of the day's best — tied with kitchen twine.
+      </p>
+      <div class="menu-price">
+       <span class="amount">
+        340
+       </span>
+       <span class="currency">
+        EGP
+       </span>
+      </div>
+     </article>
+     <article class="menu-card reveal reveal-d2 in">
+      <div aria-hidden="true" class="menu-icon">
+      </div>
+      <span class="tag">
+       Drinks
+      </span>
+      <h3>
+       Filter / Turkish Coffee
+      </h3>
+      <p>
+       Slow-drip filter or thick Turkish, brewed to your preferred sweetness.
+      </p>
+      <div class="menu-price">
+       <span class="amount">
+        55
+       </span>
+       <span class="currency">
+        EGP
+       </span>
+      </div>
+     </article>
+     <article class="menu-card reveal reveal-d3 in">
+      <div aria-hidden="true" class="menu-icon">
+      </div>
+      <span class="tag">
+       Seasonal
+      </span>
+      <h3>
+       Fruit Galette (slice)
+      </h3>
+      <p>
+       Buttery rustic pastry with whatever's ripe this week — figs, plums, apricots.
+      </p>
+      <div class="menu-price">
+       <span class="amount">
+        110
+       </span>
+       <span class="currency">
+        EGP
+       </span>
+      </div>
+     </article>
+    </div>
+   </div>
+  </section>
+  <!-- GALLERY -->
+  <section class="section gallery-section" id="gallery">
+   <div class="container">
+    <span class="eyebrow reveal in">
+     The counter, up close
+    </span>
+    <h2 class="section-title reveal reveal-d1 in">
+     A small
+     <em>
+      gallery
+     </em>
+     .
+    </h2>
+    <div class="gallery" id="gallery">
+     <figure class="reveal in">
+      <span class="gallery-tile" style="height:280px;background-image:linear-gradient(135deg,#8a5a2e,#c58a4d);">
+      </span>
+      <figcaption>
+       Croissants, first light
+      </figcaption>
+     </figure>
+     <figure class="reveal reveal-d1 in">
+      <span class="gallery-tile" style="height:360px;background-image:linear-gradient(160deg,#d9a6a0,#9a5f2a);">
+      </span>
+      <figcaption>
+       Pistachio &amp; rose
+      </figcaption>
+     </figure>
+     <figure class="reveal reveal-d2 in">
+      <span class="gallery-tile" style="height:240px;background-image:linear-gradient(120deg,#efe6d6,#c9a24c);">
+      </span>
+      <figcaption>
+       Sourdough scoring
+      </figcaption>
+     </figure>
+     <figure class="reveal reveal-d1 in">
+      <span class="gallery-tile" style="height:320px;background-image:linear-gradient(150deg,#3e2a1f,#c58a4d);">
+      </span>
+      <figcaption>
+       The oven at 6 a.m.
+      </figcaption>
+     </figure>
+     <figure class="reveal reveal-d2 in">
+      <span class="gallery-tile" style="height:280px;background-image:linear-gradient(135deg,#c9a24c,#f7f1e8);">
+      </span>
+      <figcaption>
+       Golden foil, gold hour
+      </figcaption>
+     </figure>
+     <figure class="reveal reveal-d3 in">
+      <span class="gallery-tile" style="height:360px;background-image:linear-gradient(180deg,#9a5f2a,#3e2a1f);">
+      </span>
+      <figcaption>
+       Cardamom, cinnamon, butter
+      </figcaption>
+     </figure>
+    </div>
+   </div>
+  </section>
+  <!-- HOURS / LOCATION -->
+  <section class="section info-section" id="visit">
+   <div class="container">
+    <span class="eyebrow reveal in">
+     Visit us
+    </span>
+    <h2 class="section-title reveal reveal-d1 in">
+     Come by
+     <em>
+      while it's warm.
+     </em>
+    </h2>
+    <div class="info-grid">
+     <div class="info-block reveal reveal-d1 in">
+      <h3>
+       Hours
+      </h3>
+      <div class="hours-row">
+       <span class="day">
+        Sunday – Thursday
+       </span>
+       <span class="time">
+        7:00 – 21:00
+       </span>
+      </div>
+      <div class="hours-row">
+       <span class="day">
+        Friday
+       </span>
+       <span class="time">
+        9:00 – 22:00
+       </span>
+      </div>
+      <div class="hours-row">
+       <span class="day">
+        Saturday
+       </span>
+       <span class="time">
+        8:00 – 22:00
+       </span>
+      </div>
+      <div class="hours-row">
+       <span class="day">
+        Sourdough drop
+       </span>
+       <span class="time">
+        10:30 daily
+       </span>
+      </div>
+      <div class="hours-row">
+       <span class="day">
+        Boxes &amp; catering
+       </span>
+       <span class="time">
+        Order 24h ahead
+       </span>
+      </div>
+     </div>
+     <div class="info-block reveal reveal-d2 in" style="padding:0;overflow:hidden;">
+      <div aria-label="Map placeholder" class="map">
+       <span aria-hidden="true" class="map-pin">
+       </span>
+       <span class="map-label">
+        12 Baker's Lane · Zamalek, Cairo
+       </span>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section>
+  <!-- REVIEWS -->
+  <section class="section reviews-section" id="reviews">
+   <div class="container">
+    <span class="eyebrow reveal in">
+     Kind words
+    </span>
+    <h2 class="section-title reveal reveal-d1 in">
+     What guests
+     <em>
+      are saying.
+     </em>
+    </h2>
+    <div class="reviews-strip">
+     <article class="review reveal reveal-d1 in">
+      <div aria-label="5 out of 5 stars" class="stars">
+       ★★★★★
+      </div>
+      <blockquote>
+       "The pistachio &amp; rose kunafa tart is genuinely the best thing I've eaten in Cairo this year. Understated, buttery, not too sweet."
+      </blockquote>
+      <cite>
+       <strong>
+        Nour A.
+       </strong>
+       Google Review
+      </cite>
+     </article>
+     <article class="review reveal reveal-d2 in">
+      <div aria-label="5 out of 5 stars" class="stars">
+       ★★★★★
+      </div>
+      <blockquote>
+       "You can taste the patience. Sourdough with a proper crust, croissants that shatter. I'm ruined for supermarket bread now."
+      </blockquote>
+      <cite>
+       <strong>
+        Karim S.
+       </strong>
+       Regular
+      </cite>
+     </article>
+     <article class="review reveal reveal-d3 in">
+      <div aria-label="5 out of 5 stars" class="stars">
+       ★★★★★
+      </div>
+      <blockquote>
+       "Ordered the Farine &amp; Foil box for my mum's birthday — she cried a little. That's a review, right?"
+      </blockquote>
+      <cite>
+       <strong>
+        Layla H.
+       </strong>
+       Instagram
+      </cite>
+     </article>
+    </div>
+   </div>
+  </section>
+  <!-- FOOTER -->
+  <footer id="contact">
+   <div class="container">
+    <div class="footer-grid">
+     <div class="footer-brand">
+      <a class="brand" href="#">
+       <span aria-hidden="true" class="brand-mark">
+       </span>
+       <span>
+        Farine
+        <em style="font-style:italic;color:var(--caramel);">
+         &amp;
+        </em>
+        Foil
+       </span>
+      </a>
+      <p>
+       A neighborhood bakery in Zamalek, Cairo. Slow bread, careful pastry, better mornings.
+      </p>
+      <div class="socials">
+       <a aria-label="Instagram" href="#">
+        Ig
+       </a>
+       <a aria-label="Facebook" href="#">
+        Fb
+       </a>
+       <a aria-label="TikTok" href="#">
+        Tt
+       </a>
+      </div>
+     </div>
+     <div>
+      <h4>
+       Visit
+      </h4>
+      <p>
+       12 Baker's Lane
+       <br/>
+       Zamalek, Cairo
+      </p>
+     </div>
+     <div>
+      <h4>
+       Contact
+      </h4>
+      <a href="tel:+201000000000">
+       +20 100 000 0000
+      </a>
+      <a href="mailto:hello@farineandfoil.eg">
+       hello@farineandfoil.eg
+      </a>
+     </div>
+     <div>
+      <h4>
+       Order
+      </h4>
+      <a href="#menu">
+       Reserve a Box
+      </a>
+      <a href="#menu">
+       Catering
+      </a>
+      <a href="#visit">
+       Directions
+      </a>
+     </div>
+    </div>
+    <div class="footer-bottom">
+     © 2026 Farine &amp; Foil — a fictional bakery, lovingly imagined.
+    </div>
+   </div>
+  </footer>
+  <script>
+   (() => {
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Nav shrink
+  const nav = document.getElementById('nav');
+  const onScroll = () => {
+    const y = window.scrollY;
+    nav.classList.toggle('scrolled', y > 20);
+    // progress bar
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    document.getElementById('progress').style.width = h > 0 ? (y / h * 100) + '%' : '0%';
+    // Parallax hero
+    if (!reduced){
+      const hb = document.getElementById('heroBg');
+      const hc = document.getElementById('heroContent');
+      if (y < window.innerHeight){
+        hb.style.transform = `translateY(${y * 0.35}px) scale(1.05)`;
+        hc.style.transform = `translateY(${y * 0.18}px)`;
+        hc.style.opacity = String(Math.max(0, 1 - y / (window.innerHeight * 0.75)));
+      }
+    }
+  };
+  document.addEventListener('scroll', onScroll, { passive:true });
+  onScroll();
+
+  // Reveal on scroll
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting){
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Tilt / glow menu cards
+  if (!reduced){
+    document.querySelectorAll('.menu-card').forEach(card => {
+      card.addEventListener('pointermove', (ev) => {
+        const r = card.getBoundingClientRect();
+        const x = ev.clientX - r.left;
+        const y = ev.clientY - r.top;
+        const rx = ((y / r.height) - 0.5) * -6;
+        const ry = ((x / r.width) - 0.5) * 6;
+        card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-4px)`;
+        card.style.setProperty('--mx', x + 'px');
+        card.style.setProperty('--my', y + 'px');
+      });
+      card.addEventListener('pointerleave', () => {
+        card.style.transform = '';
+      });
+    });
+  }
+
+  // Flour / steam particles
+  if (!reduced){
+    const canvas = document.getElementById('flourCanvas');
+    const ctx = canvas.getContext('2d');
+    let W, H, particles = [];
+    const resize = () => {
+      const hero = canvas.parentElement;
+      W = canvas.width = hero.clientWidth * devicePixelRatio;
+      H = canvas.height = hero.clientHeight * devicePixelRatio;
+      canvas.style.width = hero.clientWidth + 'px';
+      canvas.style.height = hero.clientHeight + 'px';
+    };
+    resize();
+    addEventListener('resize', resize);
+
+    const N = 80;
+    for (let i=0;i<N;i++){
+      particles.push({
+        x: Math.random()*W,
+        y: Math.random()*H,
+        r: (0.6 + Math.random()*2.2) * devicePixelRatio,
+        vx: (Math.random()-0.5)*0.15 * devicePixelRatio,
+        vy: (-0.15 - Math.random()*0.35) * devicePixelRatio,
+        a: 0.15 + Math.random()*0.5,
+        drift: Math.random()*Math.PI*2
+      });
+    }
+    const tick = () => {
+      ctx.clearRect(0,0,W,H);
+      for (const p of particles){
+        p.drift += 0.01;
+        p.x += p.vx + Math.sin(p.drift)*0.25*devicePixelRatio;
+        p.y += p.vy;
+        if (p.y < -10){ p.y = H + 10; p.x = Math.random()*W; }
+        if (p.x < -10) p.x = W + 10;
+        if (p.x > W + 10) p.x = -10;
+        const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r*6);
+        g.addColorStop(0, `rgba(247,241,232,${p.a})`);
+        g.addColorStop(1, 'rgba(247,241,232,0)');
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r*6, 0, Math.PI*2);
+        ctx.fill();
+      }
+      requestAnimationFrame(tick);
+    };
+    tick();
+  }
+})();
+  </script>
+ </body>
+</html>
