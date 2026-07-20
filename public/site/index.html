@@ -531,6 +531,8 @@
 
  </head>
  <body>
+  <canvas id="ambient-canvas" aria-hidden="true"></canvas>
+
   <!-- ================= NAV ================= -->
   <header class="scrolled" id="siteHeader">
    <div class="container">
@@ -607,7 +609,7 @@
     <div class="grid-overlay">
     </div>
    </div>
-   <div class="container hero-content">
+   <div class="container hero-content parallax-layer" data-parallax="18">
     <div class="eyebrow reveal in">
      Available for freelance projects
     </div>
@@ -2132,5 +2134,86 @@
     }
   });
   </script>
+  <script>
+   (function(){
+     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+     if (reduce) return;
+
+     // Ambient drifting glow particles
+     var canvas = document.getElementById('ambient-canvas');
+     if (canvas && canvas.getContext) {
+       var ctx = canvas.getContext('2d');
+       var dpr = Math.min(window.devicePixelRatio || 1, 2);
+       var particles = [];
+       var W = 0, H = 0;
+       function resize(){
+         W = canvas.clientWidth = window.innerWidth;
+         H = canvas.clientHeight = window.innerHeight;
+         canvas.width = W * dpr; canvas.height = H * dpr;
+         ctx.setTransform(dpr,0,0,dpr,0,0);
+       }
+       function seed(){
+         particles = [];
+         var count = Math.min(48, Math.floor((W*H)/28000));
+         for (var i=0;i<count;i++){
+           particles.push({
+             x: Math.random()*W,
+             y: Math.random()*H,
+             r: 60 + Math.random()*180,
+             vx: (Math.random()-0.5)*0.12,
+             vy: (Math.random()-0.5)*0.08 - 0.03,
+             h: Math.random() < 0.7 ? 35 : 25, // amber/gold hues
+             a: 0.05 + Math.random()*0.09
+           });
+         }
+       }
+       resize(); seed();
+       window.addEventListener('resize', function(){ resize(); seed(); });
+
+       function tick(){
+         ctx.clearRect(0,0,W,H);
+         ctx.globalCompositeOperation = 'lighter';
+         for (var i=0;i<particles.length;i++){
+           var p = particles[i];
+           p.x += p.vx; p.y += p.vy;
+           // wrap-around (seamless loop, no snap)
+           if (p.x < -p.r) p.x = W + p.r;
+           if (p.x > W + p.r) p.x = -p.r;
+           if (p.y < -p.r) p.y = H + p.r;
+           if (p.y > H + p.r) p.y = -p.r;
+           var g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r);
+           g.addColorStop(0, 'hsla('+p.h+', 85%, 60%, '+p.a+')');
+           g.addColorStop(1, 'hsla('+p.h+', 85%, 60%, 0)');
+           ctx.fillStyle = g;
+           ctx.beginPath();
+           ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+           ctx.fill();
+         }
+         requestAnimationFrame(tick);
+       }
+       requestAnimationFrame(tick);
+     }
+
+     // Mouse-tracking parallax (transform-only)
+     var layers = document.querySelectorAll('.parallax-layer');
+     var mx = 0, my = 0, tx = 0, ty = 0;
+     window.addEventListener('mousemove', function(e){
+       mx = (e.clientX / window.innerWidth - 0.5);
+       my = (e.clientY / window.innerHeight - 0.5);
+     }, { passive: true });
+     function loop(){
+       tx += (mx - tx) * 0.06;
+       ty += (my - ty) * 0.06;
+       for (var i=0;i<layers.length;i++){
+         var el = layers[i];
+         var depth = parseFloat(el.getAttribute('data-parallax')) || 12;
+         el.style.transform = 'translate3d('+ (tx*depth).toFixed(2) +'px,'+ (ty*depth).toFixed(2) +'px,0)';
+       }
+       requestAnimationFrame(loop);
+     }
+     requestAnimationFrame(loop);
+   })();
+  </script>
  </body>
+
 </html>
