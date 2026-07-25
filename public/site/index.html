@@ -478,7 +478,123 @@
   }
   </style>
  </head>
- <body>
+<body>
+<style>
+  #cinematic-intro{
+    position:fixed; inset:0; z-index:9999;
+    background:#0A0A0C;
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
+    animation: introOut 1s cubic-bezier(.7,0,.3,1) 3.6s forwards;
+  }
+  #cinematic-intro::before,
+  #cinematic-intro::after{
+    content:""; position:absolute; left:0; right:0; height:50%;
+    background:#0A0A0C; z-index:5;
+    animation: barsOpen 1.1s cubic-bezier(.85,0,.15,1) 2.4s forwards;
+  }
+  #cinematic-intro::before{ top:0; }
+  #cinematic-intro::after{ bottom:0; }
+  #cinematic-intro .glow{
+    position:absolute; width:900px; height:900px; border-radius:50%;
+    background: radial-gradient(circle, rgba(59,130,246,0.35), rgba(59,130,246,0) 60%);
+    filter: blur(40px);
+    animation: glowPulse 3.6s ease-out forwards;
+  }
+  #cinematic-intro .grid{
+    position:absolute; inset:0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(circle at center, #000 30%, transparent 70%);
+    -webkit-mask-image: radial-gradient(circle at center, #000 30%, transparent 70%);
+    opacity:0; animation: gridIn 1.4s ease-out .2s forwards;
+  }
+  #cinematic-intro .intro-inner{
+    position:relative; z-index:6; text-align:center;
+  }
+  #cinematic-intro .tag{
+    font-family:'Inter',sans-serif; font-size:11px; letter-spacing:0.5em;
+    color:#60A5FA; text-transform:uppercase; margin-bottom:22px;
+    opacity:0; transform:translateY(10px);
+    animation: fadeUp .8s ease-out .4s forwards;
+  }
+  #cinematic-intro .name{
+    font-family:'Poppins',sans-serif; font-weight:700;
+    font-size: clamp(38px, 8vw, 96px);
+    letter-spacing:-0.03em; color:#F5F6F7;
+    display:flex; justify-content:center; gap:0.02em;
+  }
+  #cinematic-intro .name span{
+    display:inline-block; opacity:0; transform:translateY(60%);
+    animation: letterIn .9s cubic-bezier(.2,.7,.2,1) forwards;
+  }
+  #cinematic-intro .line{
+    height:1px; width:0; background:linear-gradient(90deg,transparent,#3B82F6,transparent);
+    margin:26px auto 0; animation: lineGrow 1s ease-out 1.8s forwards;
+  }
+  #cinematic-intro .sub{
+    font-family:'Inter',sans-serif; font-size:13px; letter-spacing:0.35em;
+    color:#B8BCC4; text-transform:uppercase; margin-top:22px;
+    opacity:0; animation: fadeUp .8s ease-out 2s forwards;
+  }
+  @keyframes letterIn{ to{ opacity:1; transform:translateY(0); } }
+  @keyframes fadeUp{ to{ opacity:1; transform:translateY(0); } }
+  @keyframes lineGrow{ to{ width:280px; } }
+  @keyframes gridIn{ to{ opacity:1; } }
+  @keyframes glowPulse{
+    0%{ transform:scale(.4); opacity:0; }
+    40%{ opacity:1; }
+    100%{ transform:scale(1.4); opacity:0; }
+  }
+  @keyframes barsOpen{
+    0%{ transform:translateY(0); }
+    100%{ transform:translateY(-100%); }
+  }
+  #cinematic-intro::after{
+    animation-name: barsOpenDown;
+  }
+  @keyframes barsOpenDown{
+    0%{ transform:translateY(0); }
+    100%{ transform:translateY(100%); }
+  }
+  @keyframes introOut{
+    to{ opacity:0; visibility:hidden; pointer-events:none; }
+  }
+  body.intro-active{ overflow:hidden; }
+</style>
+<div id="cinematic-intro" aria-hidden="true">
+  <div class="grid"></div>
+  <div class="glow"></div>
+  <div class="intro-inner">
+    <div class="tag">Portfolio · 2026</div>
+    <div class="name" id="intro-name"></div>
+    <div class="line"></div>
+    <div class="sub">Web Developer &amp; Automation</div>
+  </div>
+</div>
+<script>
+  (function(){
+    document.body.classList.add('intro-active');
+    var name = "AHMED HAITHAM";
+    var el = document.getElementById('intro-name');
+    if(el){
+      name.split('').forEach(function(ch, i){
+        var s = document.createElement('span');
+        s.textContent = ch === ' ' ? '\u00A0' : ch;
+        s.style.animationDelay = (0.6 + i * 0.06) + 's';
+        el.appendChild(s);
+      });
+    }
+    setTimeout(function(){
+      var intro = document.getElementById('cinematic-intro');
+      if(intro) intro.remove();
+      document.body.classList.remove('intro-active');
+    }, 4700);
+  })();
+</script>
+
   <!-- ================= NAV ================= -->
   <header class="scrolled" id="siteHeader">
    <div class="container">
