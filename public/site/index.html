@@ -1716,22 +1716,22 @@
        </a>
       </div>
      </div>
-     <form action="https://formsubmit.co/ah.ha.elbadawy@gmail.com" class="form-card glass reveal reveal-delay-1" id="contactForm" method="POST">
-      <input name="_subject" type="hidden" value="New message from your portfolio site"/>
-      <input name="_captcha" type="hidden" value="false"/>
-      <input name="_template" type="hidden" value="table"/>
+     <form action="https://api.web3forms.com/submit" class="form-card glass reveal reveal-delay-1" id="contactForm" method="POST">
+      <input name="access_key" type="hidden" value="33a06ebf-1207-4808-8673-01b4b5060b6f"/>
+      <input name="subject" type="hidden" value="New message from your portfolio site"/>
+      <input name="from_name" type="hidden" value="Portfolio Website"/>
       <div class="form-row">
        <div class="field">
         <label for="fname">
          Full Name
         </label>
-        <input id="fname" name="Full Name" placeholder="John Doe" required="" type="text"/>
+        <input id="fname" name="name" placeholder="John Doe" required="" type="text"/>
        </div>
        <div class="field">
         <label for="femail">
          Email Address
         </label>
-        <input id="femail" name="Email" placeholder="john@business.com" required="" type="email"/>
+        <input id="femail" name="email" placeholder="john@business.com" required="" type="email"/>
        </div>
       </div>
       <div class="form-row">
@@ -1757,7 +1757,7 @@
        <label for="fmsg">
         Project Details
        </label>
-       <textarea id="fmsg" name="Message" placeholder="Tell me a bit about your business and what you're looking for..." required=""></textarea>
+       <textarea id="fmsg" name="message" placeholder="Tell me a bit about your business and what you're looking for..." required=""></textarea>
       </div>
       <button class="btn btn-primary" type="submit">
        <svg aria-hidden="true" class="lucide lucide-send" data-lucide="send" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:16px;height:16px;" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
@@ -2011,7 +2011,7 @@
     }, ms || 3500);
   }
 
-  // Contact form — submit to FormSubmit via AJAX
+  // Contact form — submit to Web3Forms via AJAX (the access key is public by design)
   const form = document.getElementById('contactForm');
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -2020,10 +2020,9 @@
     btn.disabled = true;
     btn.innerHTML = 'Sending...';
     try {
-      const res = await fetch('https://formsubmit.co/ajax/ah.ha.elbadawy@gmail.com', {
+      const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify(Object.fromEntries(new FormData(form).entries()))
+        body: new FormData(form)
       });
       let data = null;
       try { data = await res.json(); } catch (_) { /* response was not JSON */ }
