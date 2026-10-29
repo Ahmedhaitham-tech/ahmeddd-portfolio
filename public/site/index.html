@@ -1990,7 +1990,7 @@
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeVideoModal(); });
 
   // Toast notification helper
-  function showToast(message, isError) {
+  function showToast(message, isError, ms) {
     let toast = document.getElementById('siteToast');
     if (!toast) {
       toast = document.createElement('div');
@@ -2008,7 +2008,7 @@
     toast._t = setTimeout(() => {
       toast.style.opacity = '0';
       toast.style.transform = 'translateX(-50%) translateY(20px)';
-    }, 3500);
+    }, ms || 3500);
   }
 
   // Contact form — submit to FormSubmit via AJAX
@@ -2025,11 +2025,19 @@
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify(Object.fromEntries(new FormData(form).entries()))
       });
-      if (!res.ok) throw new Error('Network error');
+      let data = null;
+      try { data = await res.json(); } catch (_) { /* response was not JSON */ }
+      const failed = !res.ok || (data && (data.success === false || data.success === 'false'));
+      if (failed) {
+        console.error('Contact form failed:', res.status, data);
+        throw new Error((data && data.message) || ('HTTP ' + res.status));
+      }
       showToast('Message sent successfully!', false);
       form.reset();
     } catch (err) {
-      showToast('Something went wrong. Please try again.', true);
+      console.error('Contact form error:', err);
+      const reason = (err && err.message && !/^(HTTP \d+|Failed to fetch|Load failed|NetworkError.*)$/i.test(err.message)) ? err.message + ' ' : '';
+      showToast(reason + 'Could not send. Please email me or message me on WhatsApp.', true, 8000);
     } finally {
       btn.disabled = false;
       btn.innerHTML = original;
