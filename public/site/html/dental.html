@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aurel Dental Studio — Gentle, modern dentistry</title>
+<meta name="description" content="Aurel Dental Studio is a concept website for a modern dental clinic: check-ups, whitening, clear aligners, implants and same-day emergency care.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,500&amp;family=Hanken+Grotesk:wght@400;500;600&amp;display=swap">
+
+<!-- Intro controller. Added before first paint so the intro never flashes. If JavaScript is off, no intro is shown. -->
+<script>
+(function () {
+  var d = document.documentElement;
+  d.classList.add('js');
+  var reduce = false;
+  try { reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+  if (reduce) { d.classList.add('intro-skip'); return; }
+  d.classList.add('intro-on');
+  function done() { d.classList.remove('intro-on'); }
+  function skip() { d.classList.add('intro-skip'); done(); }
+  setTimeout(done, 5300); // failsafe: page can always scroll after the intro
+  document.addEventListener('DOMContentLoaded', function () {
+    var b = document.getElementById('introSkip');
+    if (b) b.addEventListener('click', skip);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && d.classList.contains('intro-on')) skip();
+    });
+  });
+})();
+</script>
+
+<style>
+  :root{
+    --ink:#0E2A2F;
+    --ink-soft:#35545A;
+    --porcelain:#F4F7F7;
+    --enamel:#D9E6E7;
+    --aqua:#5FD0C0;
+    --teal:#1F5C5E;
+    --teal-deep:#174749;
+    --line:rgba(14,42,47,.14);
+    --display:'Bodoni Moda', 'Didot', 'Bodoni 72', Georgia, serif;
+    --body:'Hanken Grotesk', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --ease:cubic-bezier(.77,0,.18,1);
+  }
+  *,*::before,*::after{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  html.intro-on{ overflow:hidden; }
+  body{
+    margin:0; background:var(--porcelain); color:var(--ink);
+    font-family:var(--body); font-size:17px; line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{ font-family:var(--display); font-weight:400; margin:0; letter-spacing:-.02em; }
+  p{ margin:0; }
+  a{ color:inherit; }
+  :focus-visible{ outline:3px solid var(--aqua); outline-offset:3px; border-radius:4px; }
+  .wrap{ width:min(1120px, 100% - 40px); margin-inline:auto; }
+
+  /* ---------- Intro ---------- */
+  #intro{ display:none; }
+  .js #intro{
+    display:block; position:fixed; inset:0; z-index:100;
+    animation:introGone .01s linear 5.1s forwards;
+  }
+  @keyframes introGone{ to{ visibility:hidden; pointer-events:none; } }
+  .intro-skip #intro{ display:none; }
+  .intro-panel{ position:absolute; top:0; bottom:0; width:50.3%; background:var(--ink); }
+  .intro-panel.l{ left:0;  animation:panelL 1.1s var(--ease) 3.9s forwards; }
+  .intro-panel.r{ right:0; animation:panelR 1.1s var(--ease) 3.9s forwards; }
+  @keyframes panelL{ to{ transform:translateX(-101%); } }
+  @keyframes panelR{ to{ transform:translateX(101%); } }
+  .intro-stage{
+    position:absolute; inset:0; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:10px; text-align:center;
+    animation:stageOut .5s ease 3.6s forwards;
+  }
+  @keyframes stageOut{ to{ opacity:0; } }
+  .intro-tooth{ width:clamp(110px, 20vw, 150px); height:auto; overflow:visible; margin-bottom:18px; }
+  .t-line{ fill:none; stroke:var(--aqua); stroke-width:1.6; stroke-linejoin:round; stroke-dasharray:1; stroke-dashoffset:1; animation:draw 2s cubic-bezier(.65,0,.35,1) .3s forwards; }
+  .t-fill{ fill:var(--aqua); opacity:0; animation:fillIn 1s ease 1.9s forwards; }
+  .t-glint{ fill:#fff; opacity:.6; transform:translateX(-80px) skewX(-18deg); animation:sweep 1s ease-in-out 2.1s forwards; }
+  @keyframes draw{ to{ stroke-dashoffset:0; } }
+  @keyframes fillIn{ to{ opacity:.16; } }
+  @keyframes sweep{ to{ transform:translateX(260px) skewX(-18deg); } }
+  .intro-word{
+    font-family:var(--display); font-size:clamp(2.2rem, 7vw, 3.4rem); color:#fff; opacity:0;
+    animation:wordIn 1.1s ease 2.5s forwards;
+  }
+  @keyframes wordIn{ from{ opacity:0; letter-spacing:.35em; } to{ opacity:1; letter-spacing:.04em; } }
+  .intro-sub{ font-size:15px; color:var(--enamel); opacity:0; animation:subIn .8s ease 3.1s forwards; }
+  @keyframes subIn{ to{ opacity:.85; } }
+  .intro-skip-btn{
+    position:absolute; top:20px; right:20px;
+    font:inherit; font-size:14px; color:var(--enamel); background:transparent; cursor:pointer;
+    border:1px solid rgba(217,230,231,.35); border-radius:100px; padding:8px 18px;
+    transition:background .25s, color .25s;
+  }
+  .intro-skip-btn:hover{ background:rgba(217,230,231,.12); color:#fff; }
+  @media (prefers-reduced-motion: reduce){ .js #intro{ display:none; } }
+
+  /* ---------- Header ---------- */
+  header.site{
+    position:sticky; top:0; z-index:20;
+    background:rgba(244,247,247,.88); backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  header.site .wrap{ display:flex; align-items:center; justify-content:space-between; height:68px; }
+  .brand{ font-family:var(--display); font-size:24px; text-decoration:none; letter-spacing:-.01em; }
+  nav.main{ display:flex; align-items:center; gap:30px; }
+  nav.main a{ text-decoration:none; font-size:15px; color:var(--ink-soft); }
+  nav.main a:hover{ color:var(--ink); }
+  .btn{
+    display:inline-block; font:inherit; font-weight:500; font-size:16px; text-decoration:none; cursor:pointer;
+    padding:13px 26px; border-radius:100px; border:1.5px solid var(--teal);
+    background:var(--teal); color:#fff; transition:background .25s, border-color .25s, color .25s;
+  }
+  .btn:hover{ background:var(--teal-deep); border-color:var(--teal-deep); }
+  .btn.ghost{ background:transparent; color:var(--teal); }
+  .btn.ghost:hover{ background:var(--enamel); border-color:var(--teal); }
+  nav.main .btn{ padding:9px 20px; font-size:15px; color:#fff; }
+  nav.main .btn:hover{ color:#fff; }
+
+  /* ---------- Hero ---------- */
+  .hero{ padding:clamp(48px, 8vw, 96px) 0; }
+  .hero .wrap{ display:grid; grid-template-columns:1.15fr .85fr; gap:clamp(28px, 5vw, 72px); align-items:center; }
+  .hero h1{ font-size:clamp(2.7rem, 6.4vw, 5.2rem); line-height:1.02; }
+  .hero .lead{ margin-top:26px; max-width:46ch; font-size:19px; color:var(--ink-soft); }
+  .hero .actions{ margin-top:34px; display:flex; flex-wrap:wrap; gap:14px; }
+  .hero .hours{ margin-top:30px; font-size:15px; color:var(--ink-soft); }
+  .hero-panel{
+    position:relative; aspect-ratio:4/5; border-radius:28px; overflow:hidden;
+    background:radial-gradient(120% 90% at 50% 38%, #17484D 0%, var(--ink) 62%);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .hero-panel svg{ width:58%; height:auto; overflow:visible; filter:drop-shadow(0 0 34px rgba(95,208,192,.35)); }
+  .hero-panel .caption{ position:absolute; left:22px; bottom:20px; right:22px; font-size:14px; color:var(--enamel); opacity:.85; }
+
+  /* ---------- Sections ---------- */
+  section.block{ padding:clamp(56px, 8vw, 104px) 0; }
+  section.block h2{ font-size:clamp(2rem, 4.4vw, 3.2rem); line-height:1.08; max-width:18ch; }
+  .intro-copy{ margin-top:16px; max-width:52ch; color:var(--ink-soft); }
+
+  /* Treatments: a plain list, because they are a list */
+  .treat-list{ margin:44px 0 0; padding:0; list-style:none; border-top:1px solid var(--line); }
+  .treat-list li{
+    display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.6fr) auto; gap:12px 32px; align-items:baseline;
+    padding:26px 8px; border-bottom:1px solid var(--line); transition:background .3s, padding .3s;
+  }
+  .treat-list li:hover{ background:var(--enamel); padding-inline:20px; }
+  .treat-list h3{ font-size:1.55rem; }
+  .treat-list p{ color:var(--ink-soft); }
+  .treat-list .time{ font-size:15px; color:var(--teal); white-space:nowrap; }
+
+  /* Visit: a real sequence, so it is numbered */
+  .visit{ background:var(--ink); color:#fff; }
+  .visit h2{ color:#fff; }
+  .visit .intro-copy{ color:var(--enamel); }
+  .steps{ margin:48px 0 0; padding:0; list-style:none; display:grid; grid-template-columns:repeat(4, 1fr); gap:28px; counter-reset:step; }
+  .steps li{ counter-increment:step; border-top:1px solid rgba(217,230,231,.3); padding-top:20px; }
+  .steps li::before{ content:counter(step); display:block; font-family:var(--display); font-size:2.6rem; color:var(--aqua); line-height:1; margin-bottom:14px; }
+  .steps h3{ font-size:1.5rem; color:#fff; margin-bottom:8px; }
+  .steps p{ color:var(--enamel); font-size:16px; }
+
+  /* Booking */
+  .book .wrap{ display:grid; grid-template-columns:.9fr 1.1fr; gap:clamp(28px, 6vw, 80px); align-items:start; }
+  form.book-form{ display:grid; gap:18px; }
+  .field{ display:grid; gap:7px; }
+  .field label{ font-size:15px; font-weight:500; }
+  .field input, .field select{
+    font:inherit; color:var(--ink); background:#fff; border:1.5px solid var(--line);
+    border-radius:12px; padding:13px 14px; width:100%;
+  }
+  .field input:focus, .field select:focus{ outline:3px solid var(--aqua); outline-offset:1px; border-color:var(--teal); }
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+  .form-note{ min-height:1.6em; font-size:15px; color:var(--teal); }
+
+  footer.site{ border-top:1px solid var(--line); padding:36px 0 44px; font-size:15px; color:var(--ink-soft); }
+  footer.site .wrap{ display:flex; flex-wrap:wrap; gap:12px 32px; justify-content:space-between; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width:900px){
+    .hero .wrap{ grid-template-columns:1fr; }
+    .hero-panel{ aspect-ratio:16/11; }
+    .hero-panel svg{ width:34%; }
+    .steps{ grid-template-columns:1fr 1fr; }
+    .book .wrap{ grid-template-columns:1fr; }
+  }
+  @media (max-width:640px){
+    nav.main a:not(.btn){ display:none; }
+    .treat-list li{ grid-template-columns:1fr; gap:6px; padding:22px 4px; }
+    .treat-list li:hover{ padding-inline:12px; }
+    .steps{ grid-template-columns:1fr; }
+    .row2{ grid-template-columns:1fr; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    *{ transition-duration:.01ms !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Cinematic intro (only appears when JavaScript is on) -->
+<div id="intro" aria-label="Intro">
+  <div class="intro-panel l"></div>
+  <div class="intro-panel r"></div>
+  <div class="intro-stage">
+    <button type="button" class="intro-skip-btn" id="introSkip">Skip intro</button>
+    <svg class="intro-tooth" viewBox="0 0 200 240" aria-hidden="true" focusable="false">
+      <defs>
+        <clipPath id="introToothClip">
+          <path d="M100 30C80 12 38 14 30 58C25 88 42 108 46 140C50 176 52 214 70 218C86 222 88 176 100 176C112 176 114 222 130 218C148 214 150 176 154 140C158 108 175 88 170 58C162 14 120 12 100 30Z"/>
+        </clipPath>
+      </defs>
+      <path class="t-fill" d="M100 30C80 12 38 14 30 58C25 88 42 108 46 140C50 176 52 214 70 218C86 222 88 176 100 176C112 176 114 222 130 218C148 214 150 176 154 140C158 108 175 88 170 58C162 14 120 12 100 30Z"/>
+      <g clip-path="url(#introToothClip)"><rect class="t-glint" x="0" y="0" width="26" height="240"/></g>
+      <path class="t-line" pathLength="1" d="M100 30C80 12 38 14 30 58C25 88 42 108 46 140C50 176 52 214 70 218C86 222 88 176 100 176C112 176 114 222 130 218C148 214 150 176 154 140C158 108 175 88 170 58C162 14 120 12 100 30Z"/>
+    </svg>
+    <div class="intro-word">Aurel</div>
+    <div class="intro-sub">Dental Studio</div>
+  </div>
+</div>
+
+<header class="site">
+  <div class="wrap">
+    <a class="brand" href="#top">Aurel</a>
+    <nav class="main" aria-label="Main">
+      <a href="#treatments">Treatments</a>
+      <a href="#visit">Your visit</a>
+      <a class="btn" href="#book">Book a visit</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <h1>Dentistry that never feels rushed.</h1>
+        <p class="lead">Check-ups, whitening, clear aligners and implants in a calm studio, with time set aside to explain every step before we start.</p>
+        <div class="actions">
+          <a class="btn" href="#book">Book a visit</a>
+          <a class="btn ghost" href="#treatments">See treatments</a>
+        </div>
+        <p class="hours">Open Saturday to Thursday, 9:00 to 20:00. Same-day slots held for emergencies.</p>
+      </div>
+      <div class="hero-panel" role="img" aria-label="Illustration of a tooth glowing softly on a dark background">
+        <svg viewBox="0 0 200 240" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="enamelGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#FFFFFF"/>
+              <stop offset="1" stop-color="#CFE3E4"/>
+            </linearGradient>
+          </defs>
+          <path d="M100 30C80 12 38 14 30 58C25 88 42 108 46 140C50 176 52 214 70 218C86 222 88 176 100 176C112 176 114 222 130 218C148 214 150 176 154 140C158 108 175 88 170 58C162 14 120 12 100 30Z" fill="url(#enamelGrad)" stroke="#5FD0C0" stroke-width="1.4" stroke-linejoin="round"/>
+          <path d="M52 48C58 34 74 30 84 36" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".85"/>
+        </svg>
+        <p class="caption">Concept design for a fictional clinic.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="treatments">
+    <div class="wrap">
+      <h2>What we can help with</h2>
+      <p class="intro-copy">Every plan starts with an exam. You get the options and the cost in writing before any treatment begins.</p>
+      <ul class="treat-list">
+        <li>
+          <h3>Check-up and clean</h3>
+          <p>A full exam, a digital scan and a gentle polish. We show you what we see.</p>
+          <span class="time">45 minutes</span>
+        </li>
+        <li>
+          <h3>Whitening</h3>
+          <p>Supervised whitening that is matched to your enamel, with a shade guide so you can pick the result.</p>
+          <span class="time">60 minutes</span>
+        </li>
+        <li>
+          <h3>Clear aligners</h3>
+          <p>A scan, a 3D preview of the finished smile, and regular check-ins while you wear them.</p>
+          <span class="time">30 minute consult</span>
+        </li>
+        <li>
+          <h3>Implants</h3>
+          <p>A single tooth or several, planned with a scan and explained step by step.</p>
+          <span class="time">45 minute consult</span>
+        </li>
+        <li>
+          <h3>Emergency care</h3>
+          <p>Toothache, a chipped tooth or a lost filling. Call in the morning and we will fit you in the same day.</p>
+          <span class="time">Same day</span>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block visit" id="visit">
+    <div class="wrap">
+      <h2>Your first visit, step by step</h2>
+      <p class="intro-copy">Most first visits take about an hour. Here is how they go.</p>
+      <ol class="steps">
+        <li>
+          <h3>Talk</h3>
+          <p>We start with what is bothering you, not a form.</p>
+        </li>
+        <li>
+          <h3>Look</h3>
+          <p>A gentle exam and a digital scan. You see the screen too.</p>
+        </li>
+        <li>
+          <h3>Plan</h3>
+          <p>You get the options and the cost before anything begins.</p>
+        </li>
+        <li>
+          <h3>Treat</h3>
+          <p>Treatment happens at your pace, with breaks whenever you ask.</p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="block book" id="book">
+    <div class="wrap">
+      <div>
+        <h2>Book a visit</h2>
+        <p class="intro-copy">Tell us what you need and a time that suits you. We reply within one working day.</p>
+      </div>
+      <form class="book-form" id="bookForm" novalidate>
+        <div class="field">
+          <label for="name">Full name</label>
+          <input id="name" name="name" type="text" autocomplete="name" required>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label for="contact">Phone or email</label>
+            <input id="contact" name="contact" type="text" autocomplete="email" required>
+          </div>
+          <div class="field">
+            <label for="day">Preferred day</label>
+            <input id="day" name="day" type="text" placeholder="For example, Tuesday morning">
+          </div>
+        </div>
+        <div class="field">
+          <label for="treatment">Treatment</label>
+          <select id="treatment" name="treatment">
+            <option>Check-up and clean</option>
+            <option>Whitening</option>
+            <option>Clear aligners</option>
+            <option>Implants</option>
+            <option>Emergency care</option>
+          </select>
+        </div>
+        <div><button class="btn" type="submit">Request a visit</button></div>
+        <p class="form-note" id="formNote" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <p>Aurel Dental Studio is a fictional clinic. This is a concept website by Ahmed Haitham.</p>
+    <a href="../index.html">Back to portfolio</a>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var form = document.getElementById('bookForm');
+  var note = document.getElementById('formNote');
+  if (!form || !note) return;
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = form.elements['name'].value.trim();
+    var contact = form.elements['contact'].value.trim();
+    if (!name || !contact) {
+      note.style.color = '#9A2F2F';
+      note.textContent = 'Please enter your name and a phone number or email.';
+      return;
+    }
+    note.style.color = '';
+    note.textContent = 'Thanks, ' + name + '. This is a concept demo, so nothing was sent.';
+    form.reset();
+  });
+})();
+</script>
+</body>
+</html>

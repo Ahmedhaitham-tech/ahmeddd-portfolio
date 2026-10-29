@@ -1024,44 +1024,29 @@
       Portfolio
      </h2>
      <p class="reveal reveal-delay-1 in">
-      Two concept websites I designed and built from scratch. Open the live demos to explore them.
+      Three concept websites I designed and built from scratch. Open the live demos to explore them.
      </p>
     </div>
     <div class="featured-video glass reveal in">
      <div class="fv-media">
-      <video id="fvVideo" loop="" muted="" playsinline="" preload="metadata" src="https://project--765966cf-1344-4bfe-852c-5888c557726a.lovable.app/__l5e/assets-v1/7b1b494d-33b5-4bb4-a1df-faae2ff20325/whatsapp-demo.mp4">
-      </video>
-      <button aria-label="Play project walkthrough" class="fv-play-btn" id="fvPlayBtn">
-       <svg aria-hidden="true" class="lucide lucide-play" data-lucide="play" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-        <path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z">
-        </path>
-       </svg>
-      </button>
+      <a aria-label="Open the Aurel Dental Studio demo" href="html/dental.html" rel="noopener" target="_blank">
+       <img alt="Aurel Dental Studio concept website preview" loading="lazy" src="images/dental-hero.jpg" style="width:100%;height:100%;max-height:420px;object-fit:cover;display:block;"/>
+      </a>
      </div>
      <div class="fv-body">
       <div class="eyebrow">
-       Live Project Walkthrough
+       Featured Project
       </div>
       <h3>
-       Watch a Real Build in Action
+       Aurel Dental Studio — Dental Clinic
       </h3>
       <p>
-       A quick screen recording walking through one of my recent live sites — layout, interactions, and responsive behavior, all in one take.
+       A calm, clean concept website for a dental clinic, opening with a cinematic animated intro. Treatments list, step-by-step first visit, and a booking form. Fully responsive.
       </p>
       <div class="project-actions">
-       <button class="btn btn-primary btn-sm" onclick="openVideoModal('/__l5e/assets-v1/7b1b494d-33b5-4bb4-a1df-faae2ff20325/whatsapp-demo.mp4')">
-        <svg aria-hidden="true" class="lucide lucide-maximize-2" data-lucide="maximize-2" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" style="width:14px;height:14px;" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
-         <path d="M15 3h6v6">
-         </path>
-         <path d="m21 3-7 7">
-         </path>
-         <path d="m3 21 7-7">
-         </path>
-         <path d="M9 21H3v-6">
-         </path>
-        </svg>
-        Watch Full Demo
-       </button>
+       <a class="btn btn-primary btn-sm" href="html/dental.html" rel="noopener" target="_blank">
+        Live Demo
+       </a>
        <a class="btn btn-outline btn-sm" href="#contact">
         Start Your Project
        </a>
@@ -1069,6 +1054,41 @@
      </div>
     </div>
     <div class="portfolio-grid" id="portfolioGrid">
+     <div class="project-card glass reveal in" data-cat="dentist">
+      <div class="project-media">
+       <img alt="Aurel Dental Studio concept website preview" loading="lazy" src="images/dental-hero.jpg" style="width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease);"/>
+       <span class="cat-tag">
+        Web Design
+       </span>
+      </div>
+      <div class="project-body">
+       <h3>
+        Aurel Dental Studio — Dental Clinic
+       </h3>
+       <p>
+        A calm, modern single-page site for a fictional dental clinic — cinematic tooth-drawing intro, treatments list, first-visit steps and booking form.
+       </p>
+       <div class="tech-tags">
+        <span>
+         HTML
+        </span>
+        <span>
+         CSS
+        </span>
+        <span>
+         Vanilla JS
+        </span>
+       </div>
+       <div class="project-actions">
+        <a class="btn btn-primary btn-sm" href="html/dental.html" rel="noopener" target="_blank">
+         Live Demo
+        </a>
+        <a class="btn btn-outline btn-sm" href="#contact">
+         Case Study
+        </a>
+       </div>
+      </div>
+     </div>
     <div class="project-card glass reveal reveal-delay-3 in" data-cat="restaurant">
      <div class="project-media">
       <img alt="Emberwood restaurant &amp; lounge site preview" loading="lazy" src="images/emberwood-hero.jpg" style="width:100%;height:100%;object-fit:cover;transition:transform .7s var(--ease);"/>
@@ -1930,22 +1950,6 @@
       });
     });
   });
-
-  // Featured video inline play/pause
-  const fvVideo = document.getElementById('fvVideo');
-  const fvPlayBtn = document.getElementById('fvPlayBtn');
-  fvPlayBtn.addEventListener('click', () => {
-    if (fvVideo.paused) {
-      fvVideo.muted = false;
-      fvVideo.play();
-      fvPlayBtn.innerHTML = '<i data-lucide="pause"></i>';
-    } else {
-      fvVideo.pause();
-      fvPlayBtn.innerHTML = '<i data-lucide="play"></i>';
-    }
-    if (window.lucide) lucide.createIcons();
-  });
-  fvVideo.addEventListener('ended', () => { fvPlayBtn.innerHTML = '<i data-lucide="play"></i>'; if (window.lucide) lucide.createIcons(); });
 
   // Play project videos inline, right inside their portfolio card
   window.playInline = function(triggerEl){
