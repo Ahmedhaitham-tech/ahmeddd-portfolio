@@ -11,8 +11,6 @@
   <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
   <link href="css/css2" rel="stylesheet"/>
   <!-- Icons -->
-  <script defer="" src="js/lucide.js">
-  </script>
   <style>
    :root{
     --bg:#0A0A0C;
@@ -1808,8 +1806,6 @@
    </svg>
   </button>
   <script>
-   // Init icons
-  window.addEventListener('DOMContentLoaded', () => { if (window.lucide) lucide.createIcons(); });
 
   // Header scroll state
   const header = document.getElementById('siteHeader');
@@ -1821,17 +1817,17 @@
   backToTop.addEventListener('click', () => window.scrollTo({top:0, behavior:'smooth'}));
 
   // Mobile nav
+  const ICON_MENU = '<svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16"/><path d="M4 12h16"/><path d="M4 19h16"/></svg>';
+  const ICON_CLOSE = '<svg aria-hidden="true" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>';
   const navToggle = document.getElementById('navToggle');
   const navLinks = document.getElementById('navLinks');
   navToggle.addEventListener('click', () => {
     const open = navLinks.classList.toggle('open');
-    navToggle.innerHTML = open ? '<i data-lucide="x"></i>' : '<i data-lucide="menu"></i>';
-    if (window.lucide) lucide.createIcons();
+    navToggle.innerHTML = open ? ICON_CLOSE : ICON_MENU;
   });
   document.querySelectorAll('.nav-close-link').forEach(a => a.addEventListener('click', () => {
     navLinks.classList.remove('open');
-    navToggle.innerHTML = '<i data-lucide="menu"></i>';
-    if (window.lucide) lucide.createIcons();
+    navToggle.innerHTML = ICON_MENU;
   }));
 
   // Scroll reveal
